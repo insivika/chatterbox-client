@@ -1,17 +1,4 @@
-var app = {
-
-  init : function(){
-
-  },
-  send: function(){
-
-  },
-
-  receive: function(){
-
-  }
-}
-
+var app = {}
 
 $(document).ready(function(){
 
@@ -26,10 +13,23 @@ $(document).ready(function(){
 
     // SEND FUNCTION
     app.send = $("#messenger-form").submit(function(e){
-      
+
+      e.preventDefault()
+
+      // Re-assigning keys to the message object
+
       message.text = $('.messenger-input').val();
 
+      var user = window.location.search;
+      message.username = user.split('=')[1]
+
+      message.roomname = $('#room-selector').val();
+
+      console.log(message.username)
       console.log(message.text)
+      console.log(message.roomname)
+
+      // POST message to server
 
       $.ajax({
         url: 'http://parse.rpt.hackreactor.com/chatterbox/classes/message',
@@ -38,23 +38,17 @@ $(document).ready(function(){
         contentType: 'application/json',
         success: function (chats) {
           console.log('chatterbox: Message sent');
-    
-          $chats.append('<div><strong>' + message.username + '</strong><br>' + message.text +'</div>');
-    
-    
-          // <div>
-          //   <strong>Name:</strong> 
-          //   <br>
-          //   Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          // </div>
+
+          $chats.append('<div><strong>' + message.username + ':</strong><br>' + message.text +'</div>');
+
         },
         error: function (data) {
           // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
           console.error('chatterbox: Failed to send message', data);
         }
       });
-    
-      e.preventDefault()
+
+
       });
 
 
@@ -74,19 +68,7 @@ $(document).ready(function(){
           }
         });
       }
-    
-  
-
-
-
-
 });
 
 
-//POST MESSAGES
-
-
-
-
-  // RETRIEVE MESSAGES
 
