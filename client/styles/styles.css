@@ -28,8 +28,8 @@ body {
 #main h2{
     display: inline-block;
     margin-right: 10px;
-    
-    
+
+
 }
 .messenger-form{
     display: block;
@@ -101,3 +101,20 @@ form input[type=text] {
     background-color: #0090da;
 }
 
+#room-selector{
+    height: 30px !important;
+    width: 100px;
+}
+
+#add-room {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+#add-room-input{
+    width: 100px !important;
+}
+
+input #add-room-button{
+    display: inline-block;
+}

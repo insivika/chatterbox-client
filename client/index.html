@@ -28,13 +28,18 @@
     <!-- Room -->
       <h2>Room: </h2>
       <select name="room" id="room-selector">
-        <option value="lobby">lobby</option>
+        <option value="lobby">Select a room</option>
       </select>
+
+      <form action="index.html" id="add-room">
+        <input type="text" placeholder="add a new room" id="add-room-input">
+        <input type="submit" value="Add" id="add-room-button">
+      </form>
 
     <!-- Message Form -->
       <form action="index.html" id="messenger-form">
 
-          <input type="text" class="messenger-input" placeholder="Enter message">
+          <input type="text" class="messenger-input" placeholder="Say something nice!">
 
           <input type="submit" class="messenger-submit" value="Submit">
 

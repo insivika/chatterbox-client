@@ -1,4 +1,8 @@
-var app = {}
+var app = {
+  rooms : {
+    lobby : 'lobby'
+  },
+};
 
 $(document).ready(function(){
 
@@ -10,6 +14,28 @@ $(document).ready(function(){
       text: 'Cool beans',
       roomname: '4chan',
     };
+
+    // Setting input requirements
+    $(".messenger-input").prop('required',true);
+    $("#add-room-input").prop('required',true);
+
+
+    // Add room to DOM
+
+    $("#add-room").submit(function(e){
+
+      var newRoom = $('#add-room-input').val();
+
+
+      $('#room-selector').append('<option>' + newRoom + '</option>')
+
+      console.log(newRoom);
+
+      $('#add-room-input').val('');
+
+      e.preventDefault()
+    })
+
 
     // SEND FUNCTION
     app.send = $("#messenger-form").submit(function(e){
@@ -25,9 +51,6 @@ $(document).ready(function(){
 
       message.roomname = $('#room-selector').val();
 
-      console.log(message.username)
-      console.log(message.text)
-      console.log(message.roomname)
 
       // POST message to server
 
@@ -39,8 +62,6 @@ $(document).ready(function(){
         success: function (chats) {
           console.log('chatterbox: Message sent');
 
-          $chats.append('<div><strong>' + message.username + ':</strong><br>' + message.text +'</div>');
-
         },
         error: function (data) {
           // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -48,27 +69,54 @@ $(document).ready(function(){
         }
       });
 
+      $('.messenger-input').val('');
 
       });
 
+      // GET messages from server
 
-      app.receive = function(){
+      app.receive =
+
         $.ajax({
           // This is the url you should use to communicate with the parse API server.
           url: 'http://parse.rpt.hackreactor.com/chatterbox/classes/message',
           type: 'GET',
-          data: JSON.stringify(message),
+         // data: JSON.stringify(message),
           contentType: 'application/json',
-          success: function (data) {
-            console.log('chatterbox: Message sent');
+
+          success: function (messages) {
+
+            $.each(messages.results, function(i, message){
+              $chats.append('<div><strong>'+ message.username +':</strong><br>'+message.text+'</div>');
+
+              for(key in app.rooms){
+
+                if(key !== message.roomname){
+
+                  app.rooms[message.roomname] = message.roomname;
+
+                }
+              }
+            });
+            console.log('chatterbox: Message received');
+            console.log(app.rooms)
+
+            for(key in app.rooms){
+              $('#room-selector').append('<option>' + app.rooms[key] + '</option>')
+            }
+
           },
           error: function (data) {
             // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
-            console.error('chatterbox: Failed to send message', data);
+            console.error('chatterbox: Failed to receive message', data);
           }
         });
-      }
-});
 
+        // Displaying messages based on rooms
+
+        console.log(app.rooms)
+
+
+});
 
 
