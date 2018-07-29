@@ -27,7 +27,7 @@ body {
 }
 #main h2{
     display: inline-block;
-    margin-right: 20px;
+    margin-right: 10px;
     
     
 }
@@ -71,10 +71,11 @@ form input[type=text] {
     padding: 5px;
 }
 
-.chat {
+#chats div {
     padding: 5px;
     margin-bottom: 5px;
     background-color: #eee;
+
 }
 
 .chat .username {
