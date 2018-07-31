@@ -112,7 +112,14 @@ input[type=submit]{
     margin-bottom: 10px;
     border: 1px solid #419FF2;
     border-radius: 5px;
-    
+}
+
+.message-body-friend{
+    color: white;
+    padding: 5px;
+    margin-bottom: 10px;
+    background-color:#419FF2;
+    border-radius: 5px;
 }
 
 .username {
@@ -165,12 +172,11 @@ input #add-room-button{
 }
 
 .friend {
-    color: rgb(36, 36, 36);
-    background-color: white;
+    color: white;
+    background-color: #419FF2;
     display: inline-block;
     padding: 5px 10px;
-    border: 1px solid #419FF2;
-    border-radius: 5px;
+    border-radius: 25px;
     margin-right: 5px;
     cursor: pointer;
 }

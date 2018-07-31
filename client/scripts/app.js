@@ -40,7 +40,7 @@ $("#add-room").submit(function(e){
   e.preventDefault();
 })
 
-
+// Submitting a new message
 $("#messenger-form").submit(function(e){
 
   e.preventDefault()
@@ -61,11 +61,39 @@ $("#messenger-form").submit(function(e){
 
 });
 
+
+// Clearing ALL messages
 $('#clear-messages').click(function(){
 
   app.clearMessages();
 
 });
+
+// Get Friends from Local Storage && and adding them to the DOM
+
+$(window).load(function(){
+
+  let friends;
+
+  if(localStorage.getItem('friends') === null){
+    friends = [];
+  } else {
+    friends = JSON.parse(localStorage.getItem('friends'));
+  }
+
+  friends.forEach(function(friend){
+
+    $('#friend-list').append('<div class="friend">' + friend + '</div>');
+
+  });
+
+  localStorage.setItem('friends', JSON.stringify(friends));
+
+  app.friendMessage()
+
+});
+
+//Getting new friend from the DOM and sending him/her to the local storage
 
 $('body').on('click', function(event){
     
@@ -73,10 +101,13 @@ $('body').on('click', function(event){
 
     var newFriend = event.target.innerHTML.slice(0, -1);
 
-    app.addFriend(newFriend);
+    app.addNewFriendToLocaStorage(newFriend);
   }
   
-})
+});
+
+//Toggling the messages form friends to look different than non-friends
+
 
 
 
@@ -111,6 +142,7 @@ app.send = function(message){
       url: 'http://parse.rpt.hackreactor.com/chatterbox/classes/messages',
       type: 'GET',
       contentType: 'application/json',
+      dataType: 'json',
       success: function (messages) {
         //app.renderMessage(data);
         $.each(messages.results, function(i, message){
@@ -121,9 +153,9 @@ app.send = function(message){
         console.log('chatterbox: Message received');
 
 
-        for(key in app.rooms){
-          $('#room-selector').append('<option>' + app.rooms[key] + '</option>')
-        }
+        // for(key in app.rooms){
+        //   $('#room-selector').append('<option>' + app.rooms[key] + '</option>')
+        // }
 
       },
       error: function (data) {
@@ -133,6 +165,7 @@ app.send = function(message){
 
     });
 
+    app.friends = {};
   }  
 
   app.fetch();
@@ -156,19 +189,60 @@ app.send = function(message){
   app.renderRoom = function(newRoom){
 
     $('#roomSelect').append('<option>' + newRoom + '</option>');
-  
-    console.log(newRoom);
-  
+    
   }
 
-  // Add Friend
-  app.addFriend = function(newFriend){
+  // Add Friend to local Storage
+  app.addNewFriendToLocaStorage = function(newFriend){
 
-    $('#friend-list').append('<div class="friend">' + newFriend + '</div>');
+    let friends;
+
+    if(localStorage.getItem('friends') === null){
+      friends = [];
+    } else {
+      friends = JSON.parse(localStorage.getItem('friends'));
+    }
+
+    if(friends.indexOf(newFriend) === -1){
+      friends.push(newFriend);
+      $('#friend-list').append('<div class="friend">' + newFriend + '</div>');
+    } 
+    
+    localStorage.setItem('friends', JSON.stringify(friends));
 
   }
 
+  app.friendMessage = function(){
 
+    let friends;
+
+    if(localStorage.getItem('friends') === null){
+      friends = [];
+    } else {
+      friends = JSON.parse(localStorage.getItem('friends'));
+    }
+
+    // Loop over all HTML elements that contain these strings and change their classes
+
+    friends.forEach(function(friend){
+      match = JSON.stringify(friend);
+
+      $('div').each(function(item){
+
+        let messenger = $(this).text().substr(0, $(this).text().indexOf(':'))
+
+        if(friend == messenger){
+          console.log($(this));
+          $(this).toggleClass('message-body-friend')
+        }
+      })
+
+    })
+
+   
+    localStorage.setItem('friends', JSON.stringify(friends));
+
+  }
 });
 
 };
