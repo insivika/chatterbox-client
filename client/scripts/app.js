@@ -6,7 +6,6 @@ var app = {
 
 };
 
-$(document).ready(function(){
 
 let message = {
   username: 'shawndrost',
