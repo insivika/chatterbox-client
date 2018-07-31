@@ -1,8 +1,10 @@
 var app = {
 
-  rooms : {
-    lobby: 'lobby'
-  },
+  rooms : {},
+
+  friends : {},
+
+  server : 'http://parse.rpt.hackreactor.com/chatterbox/classes/messages',
 
 };
 
@@ -25,21 +27,18 @@ $(document).ready(function(){
     $("#add-room-input").prop('required',true);
 
 
-    // Add room to DOM
+// EVENT HANDLERS AND FUNCTION CALLS
 
-    $("#add-room").submit(function(e){
+$("#add-room").submit(function(e){
 
-      var newRoom = $('#add-room-input').val();
+  var newRoom = $('#add-room-input').val();
 
+  app.renderRoom(newRoom);
+ 
+  $('#add-room-input').val('');
 
-      $('#room-selector').append('<option>' + newRoom + '</option>')
-
-      console.log(newRoom);
-
-      $('#add-room-input').val('');
-
-      e.preventDefault()
-    })
+  e.preventDefault();
+})
 
 
 $("#messenger-form").submit(function(e){
@@ -62,6 +61,22 @@ $("#messenger-form").submit(function(e){
 
 });
 
+$('#clear-messages').click(function(){
+
+  app.clearMessages();
+
+});
+
+$('body').on('click', function(event){
+    
+  if(event.target.classList.contains('username')){
+
+    var newFriend = event.target.innerHTML.slice(0, -1);
+
+    app.addFriend(newFriend);
+  }
+  
+})
 
 
 
@@ -87,35 +102,20 @@ app.send = function(message){
 
     }
 
-
-setInterval(app.fetch,1000);
-
   // GET messages from server
 
-  app.fetch = function(message){
-     $.ajax({
+  app.fetch = function(){
+    
+    $.ajax({
       // This is the url you should use to communicate with the parse API server.
       url: 'http://parse.rpt.hackreactor.com/chatterbox/classes/messages',
       type: 'GET',
-      dataType: 'jsonp',
       contentType: 'application/json',
-
-
-
       success: function (messages) {
-
+        //app.renderMessage(data);
         $.each(messages.results, function(i, message){
 
-          $chats.append('<div><strong>'+ message.username +':</strong><br>'+message.text+'</div>');
-
-          //console.log(message)
-
-
-            if(app.rooms[message.roomname] !== message.roomname){
-
-              app.rooms[message.roomname] = message.roomname;
-
-            }
+            app.renderMessage(message);
 
         });
         console.log('chatterbox: Message received');
@@ -134,8 +134,65 @@ setInterval(app.fetch,1000);
     });
 
   }  
+
+  app.fetch();
+
+  // Clears messages from DOM
+  app.clearMessages = function(){
+
+    console.log('this is working');
+    $('#chats').empty();
+
+  }
+
+  // Add messages to DOM
+  app.renderMessage = function(message){
+
+    $chats.append('<div class="message-body "><span class="username">'+ message.username +':</span><br>'+ message.text+'</div>');
+
+  }
+
+  // Add rooms to DOM
+  app.renderRoom = function(newRoom){
+
+    $('#roomSelect').append('<option>' + newRoom + '</option>');
+  
+    console.log(newRoom);
+  
+  }
+
+  // Add Friend
+  app.addFriend = function(newFriend){
+
+    $('#friend-list').append('<div class="friend">' + newFriend + '</div>');
+
+  }
+
+
 });
 
 };
 
 app.init();
+
+
+/* Josh's escaping method
+
+app.escape = function(str) {
+
+  var entityMap = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+    '/': '&#x2F;',
+    '`': '&#x60;',
+    '=': '&#x3D;'
+  };
+
+  return String(str).replace(/[&<>"'`=\/]/g, function fromEntityMap(s) {
+    return entityMap[s];
+  });
+};
+*/

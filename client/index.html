@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="styles/styles.css">
 
     <!-- dependencies -->
-  <script src="../lib/jquery.js"></script>
+  <script src="/lib/jquery.js"></script>
     <script>
       // YOU DO NOT NEED TO EDIT THIS CODE
       if (!/(&|\?)username=/.test(window.location.search)) {
@@ -23,18 +23,25 @@
     <script src="scripts/app.js"></script>
   </head>
   <body>
+    <div class="h1-wrapper">
+        <h1>chatterbox</h1>
+    </div>
     <div id="main">
-      <h1>chatterbox</h1>
+    
     <!-- Room -->
-      <h2>Room: </h2>
-      <select name="room" id="room-selector">
-        <option value="lobby">Select a room</option>
+      <h3>Room: </h3>
+
+      <select name="room" id="roomSelect">
+
+        <option>Select a room</option>
+
       </select>
 
       <form action="index.html" id="add-room">
         <input type="text" placeholder="add a new room" id="add-room-input">
         <input type="submit" value="Add" id="add-room-button">
       </form>
+
 
     <!-- Message Form -->
       <form action="index.html" id="messenger-form">
@@ -44,6 +51,14 @@
           <input type="submit" class="messenger-submit" value="Submit">
 
       </form>
+
+      <h4>Friends:</h4>
+      <div id="friend-list">
+          
+      
+      </div>
+      
+      <input id="clear-messages" type="submit" value="Clear Messages">
 
     </div>
     <div id="chats">

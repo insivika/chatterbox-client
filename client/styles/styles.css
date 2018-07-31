@@ -10,16 +10,26 @@ body {
     margin: auto;
     text-align: left;
     background: white;
-    padding: 50px 60px;
+    padding: 20px 60px;
     border: solid #ddd;
     border-width: 0 1px 1px 1px;
 }
 
-#main h1 {
+.h1-wrapper {
+    background-color: #419FF2;    
+    height: 50px;
+    color: wnite;
+    padding: 50px 60px;
+    width: 500px;
+    margin: auto;
+}
+
+h1 {
     margin-top: 0;
     font-size: 35px;
     margin-bottom: 5px;
     padding: 5px;
+    color: white;
 }
 
 #main h1 span {
@@ -31,10 +41,19 @@ body {
 
 
 }
+
+h3{
+    padding: 0;
+    margin: 0;
+}
+
+h4{
+    padding: 0;
+    margin: 5px;
+    font-size: 14px;
+}
 .messenger-form{
     display: block;
-
-
 }
 
 
@@ -64,22 +83,41 @@ form {
     margin-bottom: 20px;
 }
 
+#add-room input[type=text]{
+    padding: 6px;
+    border-radius: 3px;
+    border: 1px solid rgb(190, 190, 190);
+}
+
 form input[type=text] {
     margin-right: 10px;
     width: 70%;
     font-size: 12px;
-    padding: 5px;
+    padding: 10px;
+    border: 1px solid #419FF2;
+    border-radius: 7px;
 }
 
-#chats div {
-    padding: 5px;
-    margin-bottom: 5px;
-    background-color: #eee;
-
+input[type=submit]{
+    background-color: #419FF2;
+    border: none;
+    padding: 7px 12px;
+    color: white;
+    border-radius: 3px;
 }
 
-.chat .username {
-    font-weight: 800;
+
+.message-body{
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #419FF2;
+    border-radius: 5px;
+    
+}
+
+.username {
+    font-weight: 600;
+    cursor: pointer;
 }
 
 .chat:hover {
@@ -96,10 +134,9 @@ form input[type=text] {
     padding: 10px;
 }
 
-.friend {
-    color: #fff;
-    background-color: #0090da;
-}
+
+
+
 
 #room-selector{
     height: 30px !important;
@@ -117,4 +154,23 @@ form input[type=text] {
 
 input #add-room-button{
     display: inline-block;
+}
+
+#friend-list{
+    min-height: 75px;
+    border: 1px solid rgb(211, 211, 211);
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.friend {
+    color: rgb(36, 36, 36);
+    background-color: white;
+    display: inline-block;
+    padding: 5px 10px;
+    border: 1px solid #419FF2;
+    border-radius: 5px;
+    margin-right: 5px;
+    cursor: pointer;
 }
