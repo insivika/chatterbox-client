@@ -13,6 +13,12 @@ body {
     padding: 20px 60px;
     border: solid #ddd;
     border-width: 0 1px 1px 1px;
+    overflow: hidden;
+
+}
+
+#chats{
+    height: 1000vh;
 }
 
 .h1-wrapper {
@@ -38,7 +44,6 @@ h1 {
 #main h2{
     display: inline-block;
     margin-right: 10px;
-
 
 }
 
@@ -140,8 +145,6 @@ input[type=submit]{
 .spinner img {
     padding: 10px;
 }
-
-
 
 
 

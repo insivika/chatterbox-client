@@ -16,10 +16,12 @@ let message = {
 };
 
 
+
+
 app.init =  function(){
 
 $(document).ready(function(){
-
+    //setTimeout?
     var $chats = $('#chats');
 
     // Setting input requirements
@@ -28,6 +30,8 @@ $(document).ready(function(){
 
 
 // EVENT HANDLERS AND FUNCTION CALLS
+
+
 
 $("#add-room").submit(function(e){
 
@@ -101,7 +105,7 @@ $('body').on('click', function(event){
 
     var newFriend = event.target.innerHTML.slice(0, -1);
 
-    app.addNewFriendToLocaStorage(newFriend);
+    app.handleUsernameClick(newFriend);
   }
   
 });
@@ -109,6 +113,35 @@ $('body').on('click', function(event){
 //Toggling the messages form friends to look different than non-friends
 
 
+// Removing friends
+$('body').on('click', function(event){
+
+  var friendToBeRemoved;
+
+  // Sends the friend to be removed to the local storage removal function
+  if(event.target.classList.contains('friend')){
+
+  friendToBeRemoved = $(event.target).text();
+
+  // app.removeFriendFromLocalStorage(friendToBeRemoved);
+  }
+
+
+  // Removing friends from DOM
+  var currentFriends = event.target.parentElement.childNodes;
+
+  for(var i = 0; i < currentFriends.length; i++){
+    if(currentFriends[i] === friendToBeRemoved){
+
+    }
+  }
+  currentFriends.forEach(function(friend){
+    if(friend === friendToBeRemoved){
+      console.log(friend)
+    }
+  })
+  //event.target.classList.contains('username')
+})
 
 
 // SEND FUNCTION
@@ -135,6 +168,7 @@ app.send = function(message){
 
   // GET messages from server
 
+
   app.fetch = function(){
     
     $.ajax({
@@ -143,13 +177,13 @@ app.send = function(message){
       type: 'GET',
       contentType: 'application/json',
       dataType: 'json',
+      data: {order: '-createdAt'},
       success: function (messages) {
         //app.renderMessage(data);
-        $.each(messages.results, function(i, message){
+        
+            console.log(messages.results)
+            app.renderMessage(messages.results);
 
-            app.renderMessage(message);
-
-        });
         console.log('chatterbox: Message received');
 
 
@@ -165,7 +199,6 @@ app.send = function(message){
 
     });
 
-    app.friends = {};
   }  
 
   app.fetch();
@@ -174,15 +207,21 @@ app.send = function(message){
   app.clearMessages = function(){
 
     console.log('this is working');
-    $('#chats').empty();
+    //$('#chats').empty();
+
+    document.getElementById('chats').innerHTML = '';
 
   }
 
   // Add messages to DOM
-  app.renderMessage = function(message){
-
-    $chats.append('<div class="message-body "><span class="username">'+ message.username +':</span><br>'+ message.text+'</div>');
-
+  app.renderMessage = function(messages){
+    let HTML = '';
+  //  $chats.append('');
+    messages.forEach(function(message){
+      HTML += `<div class="message-body "><span class="username"> ${message.username} :</span><br> ${message.text}</div>`
+    })    
+    
+    $chats.append(HTML)
   }
 
   // Add rooms to DOM
@@ -193,7 +232,7 @@ app.send = function(message){
   }
 
   // Add Friend to local Storage
-  app.addNewFriendToLocaStorage = function(newFriend){
+  app.handleUsernameClick = function(newFriend){
 
     let friends;
 
@@ -232,7 +271,6 @@ app.send = function(message){
         let messenger = $(this).text().substr(0, $(this).text().indexOf(':'))
 
         if(friend == messenger){
-          console.log($(this));
           $(this).toggleClass('message-body-friend')
         }
       })
@@ -246,6 +284,13 @@ app.send = function(message){
 });
 
 };
+
+
+setInterval(function(){
+  app.clearMessages();
+  app.fetch();
+}, 2000);
+
 
 app.init();
 
