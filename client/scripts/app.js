@@ -15,9 +15,6 @@ let message = {
   roomname: '4chan',
 };
 
-
-
-
 app.init =  function(){
 
 $(document).ready(function(){
@@ -30,8 +27,6 @@ $(document).ready(function(){
 
 
 // EVENT HANDLERS AND FUNCTION CALLS
-
-
 
 $("#add-room").submit(function(e){
 
@@ -58,8 +53,8 @@ $("#messenger-form").submit(function(e){
   message.username = user.split('=')[1]
 
   message.roomname = $('#room-selector').val();
-
-  app.send();
+  
+  app.send(message);
 
   $('.messenger-input').val('');
 
@@ -108,9 +103,12 @@ $('body').on('click', function(event){
     app.handleUsernameClick(newFriend);
   }
   
+  // Change classes of messages 
+
+  app.friendMessage()
+
 });
 
-//Toggling the messages form friends to look different than non-friends
 
 
 // Removing friends
@@ -146,7 +144,7 @@ $('body').on('click', function(event){
 
 // SEND FUNCTION
 app.send = function(message){
-
+        console.log(message)
         // POST message to server
 
         $.ajax({
@@ -179,14 +177,18 @@ app.send = function(message){
       dataType: 'json',
       data: {order: '-createdAt'},
       success: function (messages) {
-        //app.renderMessage(data);
-        
-            console.log(messages.results)
-            app.renderMessage(messages.results);
+          
+          //app.renderMessage(data);
+          $.each(messages.results, function(i, message){
+  
+              app.renderMessage(message);
+  
+          });
 
         console.log('chatterbox: Message received');
 
 
+        // call app.rooms()
         // for(key in app.rooms){
         //   $('#room-selector').append('<option>' + app.rooms[key] + '</option>')
         // }
@@ -214,15 +216,19 @@ app.send = function(message){
   }
 
   // Add messages to DOM
-  app.renderMessage = function(messages){
+  app.renderMessage = function(message){
+
     let HTML = '';
-  //  $chats.append('');
-    messages.forEach(function(message){
-      HTML += `<div class="message-body "><span class="username"> ${message.username} :</span><br> ${message.text}</div>`
-    })    
+  
+    var cleanUsername = app.escape(message.username);
+
+    var cleanMessage = app.escape(message.text)
     
+    HTML += `<div id="${message.objectId}"class="message-body "><span class="username"> ${cleanUsername} :</span><br> ${cleanMessage}</div>`
+   
     $chats.append(HTML)
   }
+
 
   // Add rooms to DOM
   app.renderRoom = function(newRoom){
@@ -271,7 +277,7 @@ app.send = function(message){
         let messenger = $(this).text().substr(0, $(this).text().indexOf(':'))
 
         if(friend == messenger){
-          $(this).toggleClass('message-body-friend')
+          $(this).addClass('message-body-friend')
         }
       })
 
@@ -281,21 +287,31 @@ app.send = function(message){
     localStorage.setItem('friends', JSON.stringify(friends));
 
   }
+
+
+
+  // Check latest message and append new message 
+  app.check = function(){
+  
+    console.log($('body').childNodes)
+  
+  }
+  
+  app.check()
+
+
 });
 
 };
 
 
+
+
 setInterval(function(){
-  app.clearMessages();
+  //app.clearMessages();
   app.fetch();
-}, 2000);
+}, 500);
 
-
-app.init();
-
-
-/* Josh's escaping method
 
 app.escape = function(str) {
 
@@ -314,4 +330,10 @@ app.escape = function(str) {
     return entityMap[s];
   });
 };
-*/
+
+
+app.init();
+
+
+
+
