@@ -74,6 +74,7 @@ app.send = function(message){
           url: 'http://parse.rpt.hackreactor.com/chatterbox/classes/messages',
           type: 'POST',
           data: JSON.stringify(message),
+
           contentType: 'application/json',
           success: function (chats) {
             console.log('chatterbox: Message sent');
@@ -92,15 +93,14 @@ setInterval(app.fetch,1000);
 
   // GET messages from server
 
-  app.fetch = function(message){
+  app.fetch = function(){
      $.ajax({
       // This is the url you should use to communicate with the parse API server.
       url: 'http://parse.rpt.hackreactor.com/chatterbox/classes/messages',
       type: 'GET',
+
       dataType: 'jsonp',
       contentType: 'application/json',
-
-
 
       success: function (messages) {
 
