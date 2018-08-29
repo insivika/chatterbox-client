@@ -164,7 +164,7 @@ var app = {
 
     app.friends[username] = username;
 
-    $(event.target).parent().addClass('friend');
+    $(event.target).parent().toggleClass('friend');
 
   },
 
