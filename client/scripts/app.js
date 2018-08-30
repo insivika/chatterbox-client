@@ -64,23 +64,25 @@ var app = {
       data: {/*order: '-createdAt'*/},
       success: function(data){
 
-        data = JSON.parse(data);
+        dataParsed = JSON.parse(data);
 
-        if(!data.results || !data.results.length) { return; }
+        if(!dataParsed.results || !dataParsed.results.length) { return; }
 
-        app.messages = data.results;
+        app.messages = dataParsed.results;
 
-        var mostRecentMessage = data.results[0];
+        var mostRecentMessage = dataParsed.results[0];
 
-        if(mostRecentMessage.objectId !== app.lastMessageID){
+        console.log(mostRecentMessage)
+
+        // if(mostRecentMessage.objectId !== app.lastMessageID){
 
           
           //need to render rooms
-          app.renderMessages(data.results)
+          app.renderMessages(dataParsed.results)
 
           app.lastMessageID = mostRecentMessage.objectId;
 
-        };
+        // };
 
       },
 
